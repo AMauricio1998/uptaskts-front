@@ -1,6 +1,6 @@
 import { getProjectById } from "@/api/ProjectApi";
 import EditProjectForm from "@/components/projects/EditProjectForm";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Navigate, useParams } from "react-router-dom"
 
 const EditProjectView = () => {
