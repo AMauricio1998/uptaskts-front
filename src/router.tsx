@@ -11,6 +11,8 @@ import ConfirmAccountView from "./views/auth/ConfirmAccountView";
 import RequestNewCodeView from "./views/auth/RequestNewCodeView";
 import ForgotPasswordView from "./views/auth/ForgotPasswordView";
 import NewPasswordView from "./views/auth/NewPasswordView";
+import ProjectTeamView from "./views/projects/ProjectTeamView";
+import Error404 from "./components/Error404";
 
 export default function Router() {
 
@@ -22,6 +24,7 @@ export default function Router() {
                     <Route path="/projects/create" element={ <CreateProjectView />}/>
                     <Route path="/projects/:projectId" element={ <ProjectDetailsView />}/>
                     <Route path="/projects/:projectId/edit" element={ <EditProjectView />}/>
+                    <Route path="/projects/:projectId/team" element={ <ProjectTeamView />}/>
                 </Route>
 
                 <Route element={ <AuthLayout /> }>
@@ -32,6 +35,8 @@ export default function Router() {
                     <Route index path="/auth/forgot-password" element={ <ForgotPasswordView />}/>
                     <Route index path="/auth/new-password" element={ <NewPasswordView />}/>
                 </Route>
+
+                <Route path="*" element={ <Error404 /> }/>
             </Routes>
         </BrowserRouter>
     )

@@ -18,6 +18,15 @@ export type NewPasswordFormType = Pick<Auth, 'password' | 'password_confirmation
 
 export type ConfirmToken = Pick<Auth, 'token'>;
 
+/** Users */
+export const userEchema = AuthSchema.pick({
+    name: true,
+    email: true,
+}).extend({
+    _id: z.string()
+});
+export type User = z.infer<typeof userEchema>;
+
 /** TASK */
 export const TaskStatusSchema = z.enum(["pending", "onHold", "inProgress", "underReview", "completed"]);
 export type TaskStatus = z.infer<typeof TaskStatusSchema>
@@ -41,6 +50,7 @@ export const projectSchema = z.object({
     projectName: z.string(),
     clientName: z.string(),
     description: z.string(),
+    manager: z.string(userEchema.pick({ _id: true })),
 });
 
 export const dashboardProjectSchema = z.array(
@@ -49,8 +59,20 @@ export const dashboardProjectSchema = z.array(
         projectName: true,
         clientName: true,
         description: true,
+        manager: true,
     })
 );
 
 export type Project = z.infer<typeof projectSchema>;
 export type ProjectFormData = Pick<Project, 'clientName' | 'description' | 'projectName'>;
+
+/** TEAM */
+const TeamMemberSchema = userEchema.pick({
+    name: true,
+    email: true,
+    _id: true,
+})
+
+export const teamMembersSchema = z.array(TeamMemberSchema);
+export type TeamMember = z.infer<typeof TeamMemberSchema>;
+export type TeamMemberForm = Pick<TeamMember, 'email'>;
