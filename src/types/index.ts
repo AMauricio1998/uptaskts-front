@@ -27,6 +27,19 @@ export const userEchema = AuthSchema.pick({
 });
 export type User = z.infer<typeof userEchema>;
 
+/** NOTES */
+export const NoteSchema = z.object({
+    _id: z.string(),
+    content: z.string(),
+    createdBy: userEchema,
+    task: z.string(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+});
+
+export type Note = z.infer<typeof NoteSchema>;
+export type NoteFormData = Pick<Note, 'content'>;
+
 /** TASK */
 export const TaskStatusSchema = z.enum(["pending", "onHold", "inProgress", "underReview", "completed"]);
 export type TaskStatus = z.infer<typeof TaskStatusSchema>
@@ -37,6 +50,14 @@ export const TaskSchema = z.object({
     description: z.string(),
     project: z.string(),
     status: TaskStatusSchema,
+    completeBy: z.array(z.object({
+        _id: z.string(),
+        user: userEchema,
+        status: TaskStatusSchema
+    })),
+    notes: z.array(NoteSchema.extend({
+        createdBy: userEchema
+    })),
     createdAt: z.string(),
     updatedAt: z.string(),
 });
