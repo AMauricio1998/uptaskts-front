@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, Transition } from '@headlessui/react'
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
@@ -9,9 +9,10 @@ import { toast } from 'react-toastify';
 import Spinner from '@/components/Spinner';
 import { useAuth } from '@/hooks/useAuth';
 import { isManager } from '@/utils/policies';
+import DeleteProjectModal from '@/components/projects/DeleteProjectModal';
 
 const DashboardView = () => {
-
+  const navigate = useNavigate();
   const { data : user, isLoading : authLoading } = useAuth();
 
   const queryClient = useQueryClient();
@@ -110,7 +111,7 @@ const DashboardView = () => {
 
                                   <Menu.Item>
                                       <button type='button' className='block px-3 py-1 text-sm leading-6 text-red-500'
-                                        onClick={()=> mutate(project._id) }
+                                        onClick={()=> navigate(location.pathname + `?deleteProject=${project._id}`) }
                                       >
                                             Eliminar Proyecto
                                       </button>
@@ -131,6 +132,8 @@ const DashboardView = () => {
             </Link>
         </p>
       )}
+
+      <DeleteProjectModal />
     </>
   )
 }
