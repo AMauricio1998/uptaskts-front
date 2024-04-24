@@ -1,11 +1,10 @@
-import { Fragment } from 'react'
+import { Fragment } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, Transition } from '@headlessui/react'
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
+import { Menu, Transition } from '@headlessui/react';
+import { useQuery } from "@tanstack/react-query";
+import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 
-import { deleteProject, getProjects } from "@/api/ProjectApi";
-import { toast } from 'react-toastify';
+import { getProjects } from "@/api/ProjectApi";
 import Spinner from '@/components/Spinner';
 import { useAuth } from '@/hooks/useAuth';
 import { isManager } from '@/utils/policies';
@@ -15,22 +14,10 @@ const DashboardView = () => {
   const navigate = useNavigate();
   const { data : user, isLoading : authLoading } = useAuth();
 
-  const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ['projects'],
     queryFn: getProjects
   });
-
-  const { mutate } = useMutation({
-    mutationFn: deleteProject,
-    onError: (error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['projects'] });
-      toast.success(data);
-    }
-  })
 
   if(isLoading && authLoading) return <Spinner />
 

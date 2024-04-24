@@ -2,19 +2,23 @@ import { Fragment } from "react"
 import { Menu, Transition } from "@headlessui/react"
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 
-import { Task } from "@/types/index"
+import { TaskProject } from "@/types/index"
 import { useNavigate, useParams } from "react-router-dom"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { deleteTask } from "@/api/TaskApi"
 import { toast } from "react-toastify"
+import { useDraggable } from "@dnd-kit/core"
 
 type TaskCardProps = {
-    task: Task
+    task: TaskProject
     canEdit?: boolean
 }
 
 const TaskCard = ({ task, canEdit } : TaskCardProps) => {
 
+    const { attributes, listeners, transform, setNodeRef }  = useDraggable({
+        id: task._id,
+    })
     const navigate = useNavigate();
     const params = useParams();
     const projectId = params.projectId!;
@@ -32,17 +36,31 @@ const TaskCard = ({ task, canEdit } : TaskCardProps) => {
         retry: false
     })
 
+    const style = transform ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+        padding: '1.25rem',
+        backgroundColor: '#fff',
+        width: '300px',
+        display: 'flex',
+        borderWidth: '1px',
+        borderColor: 'rgba(203 213 225 / var(--tw-border-opacity))',
+    } : undefined
+
     return (
         <>
             <li className="p-5 bg-white border border-slate-300 flex justify-between gap-3">
-                <div className="min-w-0 flex flex-col gap-y-4">
-                    <button
-                        type="button"
+                <div 
+                    { ...listeners }
+                    { ...attributes }
+                    ref={ setNodeRef }
+                    style={ style }
+                    className="min-w-0 flex flex-col gap-y-4"
+                >
+                    <p
                         className="text-xl font-bold text-slate-600 text-left"
-                        onClick={() => navigate(location.pathname + `?viewTask=${task._id}`)}
                     >
                         { task.name }
-                    </button>
+                    </p>
                     <p className="text-slate-500">{ task.description }</p>
                 </div>
 

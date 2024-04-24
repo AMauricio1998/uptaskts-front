@@ -1,4 +1,4 @@
-import { getProjectById } from "@/api/ProjectApi";
+import { getFullProject } from "@/api/ProjectApi";
 import Spinner from "@/components/Spinner";
 import AddTaskModal from "@/components/tasks/AddTaskModal";
 import EditTaskData from "@/components/tasks/EditTaskData";
@@ -21,7 +21,7 @@ const ProjectDetailsView = () => {
 
   const { data, isLoading, isError } = useQuery({
       queryKey: ['project', projectId],
-      queryFn: () => getProjectById(projectId),
+      queryFn: () => getFullProject (projectId),
       retry: false
   })
 

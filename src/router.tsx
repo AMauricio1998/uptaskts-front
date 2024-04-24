@@ -12,10 +12,10 @@ import RequestNewCodeView from "./views/auth/RequestNewCodeView";
 import ForgotPasswordView from "./views/auth/ForgotPasswordView";
 import NewPasswordView from "./views/auth/NewPasswordView";
 import ProjectTeamView from "./views/projects/ProjectTeamView";
-import Error404 from "./components/Error404";
 import ProfileView from "./views/profile/ProfileView";
 import ChangePasswordView from "./views/profile/ChangePasswordView";
 import ProfileLayout from "./layouts/ProfileLayout";
+import NotFound from "./views/404/NotFound";
 
 export default function Router() {
 
@@ -43,7 +43,9 @@ export default function Router() {
                     <Route index path="/auth/new-password" element={ <NewPasswordView />}/>
                 </Route>
 
-                <Route path="*" element={ <Error404 /> }/>
+                <Route element={ <AuthLayout /> }>
+                    <Route path="/404" element={ <NotFound /> }/>
+                </Route>
             </Routes>
         </BrowserRouter>
     )
