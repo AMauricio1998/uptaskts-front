@@ -15,7 +15,7 @@ const SearchResult = ({ user, resetData } : SearchResultProps) => {
     const params = useParams();
     const projectId = params.projectId!;
 
-    const queryClient = useQueryClient();
+    const queryClient = Client();
     const { mutate } = useMutation({
         mutationFn: addUserToProject,
         onError: (error) => {
